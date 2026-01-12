@@ -1,12 +1,10 @@
-# 🔍 LeakData.org - Mobile Number Tracker & Data Breach Checker
+# 🔍 Drishti - Mobile Number Tracker & Data Breach Checker
 
 A powerful, privacy-focused web application built with **Next.js 16** that allows users to track Indian mobile number locations and check if their personal data has been compromised in data breaches. Featuring an interactive map interface, real-time geocoding, and comprehensive privacy controls.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-16.0-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![Cloudflare](https://img.shields.io/badge/Deploy-Cloudflare-orange)](https://pages.cloudflare.com/)
-
 ## 🌟 Features
 
 - **📱 Mobile Number Tracking**: Track any Indian 10-digit mobile number location instantly
@@ -20,9 +18,6 @@ A powerful, privacy-focused web application built with **Next.js 16** that allow
 - **🔍 SEO Optimized**: Schema.org markup for rich search results
 - **📈 Analytics**: Google Analytics integration for insights
 
-## 🚀 Live Demo
-
-Visit the live application: [https://leakdata.org](https://leakdata.org)
 
 ## 📋 Table of Contents
 
@@ -61,7 +56,6 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v18.17 or higher) - [Download](https://nodejs.org/)
 - **npm** or **yarn** - Package manager
 - **Git** - Version control
-- **Cloudflare Account** - [Sign up](https://dash.cloudflare.com/sign-up)
 - **Neon Database Account** - [Sign up](https://neon.tech/)
 - **Google Analytics Account** (optional) - [Sign up](https://analytics.google.com/)
 
@@ -70,8 +64,8 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yenbook/proxyearth.git
-cd proxyearth
+git clone https://github.com/blackdevil0009/drishti.git
+cd drishti
 ```
 
 ### Step 2: Install Dependencies
@@ -134,9 +128,6 @@ Create a `.env.local` file with the following variables:
 |----------|-------------|---------------|----------|
 | `DATABASE_URL` | Neon PostgreSQL connection string | [Neon Dashboard](https://console.neon.tech/) → Your Project → Connection Details | ✅ Yes |
 | `API_BASE_URL` | External data leak API endpoint | Your data provider API endpoint | ✅ Yes |
-| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key | [Cloudflare Dashboard](https://dash.cloudflare.com/) → Turnstile → Site → Secret Key | ✅ Yes |
-| `TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key | [Cloudflare Dashboard](https://dash.cloudflare.com/) → Turnstile → Site → Site Key | ✅ Yes |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics Measurement ID | [Google Analytics](https://analytics.google.com/) → Admin → Property → Data Streams | ⚠️ Optional |
 
 ### Example `.env.local`:
 
@@ -171,24 +162,6 @@ NEXT_PUBLIC_GA_ID="G-071CLQ0DJV"
 2. Get your API endpoint URL from their documentation
 3. Example format: `https://api.provider.com/v1/search`
 
-#### 3. **TURNSTILE_SECRET_KEY & TURNSTILE_SITE_KEY** (Cloudflare)
-
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Navigate to **Turnstile** in the left sidebar
-3. Click **Add Site**
-4. Fill in:
-   - **Site name**: `leakdata.org` (or your domain)
-   - **Domain**: Your actual domain or `localhost` for development
-5. After creation, you'll see:
-   - **Site Key** → Use as `TURNSTILE_SITE_KEY` (also update in `RemoveDataModal.tsx`)
-   - **Secret Key** → Use as `TURNSTILE_SECRET_KEY`
-
-#### 4. **NEXT_PUBLIC_GA_ID** (Google Analytics - Optional)
-
-1. Go to [Google Analytics](https://analytics.google.com/)
-2. Create a **GA4 Property** if you don't have one
-3. Navigate to **Admin** → **Data Streams** → **Web**
-4. Copy the **Measurement ID** (format: `G-XXXXXXXXXX`)
 
 ## 🗄️ Database Setup
 
@@ -236,87 +209,13 @@ This project is optimized for **Cloudflare Pages** with **Edge Runtime**.
 
 ### Step 1: Connect to Cloudflare Pages
 
-#### Option A: Using Cloudflare Dashboard (Recommended)
-
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Navigate to **Workers & Pages**
-3. Click **Create Application** → **Pages** → **Connect to Git**
-4. Authorize Cloudflare to access your GitHub account
-5. Select the `yenbook/proxyearth` repository
-6. Configure build settings:
-   - **Framework preset**: Next.js
-   - **Build command**: `npm run pages:build`
-   - **Build output directory**: `.vercel/output/static`
-
-#### Option B: Using Wrangler CLI
-
-```bash
-# Install Wrangler
-npm install -g wrangler
-
-# Login to Cloudflare
-wrangler login
-
-# Deploy
-npx @cloudflare/next-on-pages@latest
-wrangler pages deploy .vercel/output/static --project-name=proxyearth
-```
-
-### Step 2: Configure Environment Variables in Cloudflare
-
-1. In Cloudflare Dashboard, go to **Workers & Pages** → Select your project
-2. Navigate to **Settings** → **Environment Variables**
-3. Add the following variables:
-
-**For Production:**
-
-Click **Add Variables** → Select **Production**
-
-| Variable Name | Value | Type |
-|---------------|-------|------|
-| `DATABASE_URL` | `postgresql://user:pass@ep-xxx.neon.tech/...` | Secret ✅ |
-| `API_BASE_URL` | `https://your-api.com/search` | Secret ✅ |
-| `TURNSTILE_SECRET_KEY` | `0x4AAAAxxxxxxxx` | Secret ✅ |
-
-**Important Notes:**
-- Mark `DATABASE_URL`, `API_BASE_URL`, and `TURNSTILE_SECRET_KEY` as **secrets** (encrypted)
-- Public variables like `TURNSTILE_SITE_KEY` should be hardcoded or in source code
-- Click **Save** after adding all variables
-
-### Step 3: Deploy
-
-```bash
-# Trigger deployment
-git push origin main
-
-# Or use Cloudflare Dashboard → Deployments → Retry Deployment
-```
-
-### Step 4: Custom Domain Setup (Optional)
-
-1. In Cloudflare Pages, go to **Custom Domains**
-2. Click **Set up a custom domain**
-3. Enter your domain (e.g., `leakdata.org`)
-4. Cloudflare will automatically configure DNS
-
-### Build Configuration
-
-The project uses a custom build script for Cloudflare Pages:
-
-```json
-{
-  "scripts": {
-    "pages:build": "npx @cloudflare/next-on-pages@latest"
-  }
-}
-```
 
 This is already configured in `package.json`.
 
 ## 📁 Project Structure
 
 ```
-proxyearth/
+drishti/
 ├── public/                    # Static assets
 │   ├── favicon.ico
 │   └── yt-size-img.jpg       # SEO image
@@ -485,11 +384,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Developer
 
-**yenbook**
+BlackDev
 
-- GitHub: [@yenbook](https://github.com/yenbook)
-- Repository: [proxyearth](https://github.com/yenbook/proxyearth)
-
+- GitHub: [@yenbook](https://github.com/blackdevil0009)
 ## 🙏 Acknowledgments
 
 - [Next.js](https://nextjs.org/)
@@ -499,13 +396,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [React Leaflet](https://react-leaflet.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
-## 📞 Support
-
-For issues, questions, or suggestions:
-
-- Create an issue: [GitHub Issues](https://github.com/yenbook/proxyearth/issues)
-- Email: contact@leakdata.org
-
----
-
-**⭐ If you find this project useful, please consider giving it a star on GitHub!**
